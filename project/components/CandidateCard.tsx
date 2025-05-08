@@ -17,7 +17,8 @@ import Colors from '../constants/Colors';
 import { X, Check } from 'lucide-react-native';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_WIDTH = SCREEN_WIDTH * 0.9;
+const MAX_CARD_WIDTH = 400;
+const CARD_WIDTH = Math.min(SCREEN_WIDTH * 0.9, MAX_CARD_WIDTH);
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.3;
 
 interface CardProps {
@@ -25,13 +26,15 @@ interface CardProps {
   onSwipeLeft: () => void;
   onSwipeRight: () => void;
   isFirst: boolean;
+  zIndex: number;
 }
 
 export default function CandidateCard({ 
   user, 
   onSwipeLeft, 
   onSwipeRight, 
-  isFirst 
+  isFirst,
+  zIndex,
 }: CardProps) {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -99,7 +102,7 @@ export default function CandidateCard({
   
   return (
     <GestureDetector gesture={panGesture}>
-      <Animated.View style={[styles.card, animatedStyle]}>
+      <Animated.View style={[styles.card, animatedStyle, { zIndex }]}>
         <View style={styles.imageContainer}>
           <Image source={{ uri: user.avatar }} style={styles.image} />
         </View>

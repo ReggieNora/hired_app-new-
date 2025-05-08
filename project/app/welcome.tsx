@@ -16,7 +16,7 @@ export default function WelcomeScreen() {
 
   const handleContinue = (type: 'seeker' | 'employer') => {
     setUserType(type);
-    router.replace('/login');
+    router.replace({ pathname: '/login', params: { type } });
   };
 
   if (!fontsLoaded) {
@@ -26,7 +26,7 @@ export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
-      <Animated.View 
+      <Animated.View
         style={styles.content}
         entering={FadeIn.duration(800)}
       >
@@ -37,7 +37,7 @@ export default function WelcomeScreen() {
           />
           <Text style={styles.title}>Hired</Text>
           <Text style={styles.subtitle}>
-            Find your next opportunity or discover top talent
+            Find your next opportunity — or hire top-tier talent
           </Text>
         </View>
 
@@ -53,8 +53,15 @@ export default function WelcomeScreen() {
             style={[styles.button, styles.employerButton]}
             onPress={() => handleContinue('employer')}
           >
-            <Text style={styles.buttonText}>Continue as Employer</Text>
+            <Text style={[styles.buttonText, { color: Colors.primary }]}>Continue as Employer</Text>
           </TouchableOpacity>
+
+          {/* Google sign-in placeholder */}
+          {/* 
+          <TouchableOpacity style={styles.googleButton}>
+            <Text style={styles.googleText}>Sign in with Google</Text>
+          </TouchableOpacity> 
+          */}
         </View>
       </Animated.View>
     </View>
@@ -121,5 +128,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBold',
     fontSize: 16,
     color: Colors.white,
+  },
+  googleButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 14,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    alignItems: 'center',
+  },
+  googleText: {
+    fontFamily: 'Inter-Regular',
+    fontSize: 16,
+    color: '#555',
   },
 });

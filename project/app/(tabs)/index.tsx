@@ -22,11 +22,7 @@ export default function HomeScreen() {
   });
 
   useEffect(() => {
-    if (currentIndex >= users.length) {
-      setShowEmptyState(true);
-    } else {
-      setShowEmptyState(false);
-    }
+    setShowEmptyState(currentIndex >= users.length);
   }, [currentIndex, users]);
 
   const handleSwipeLeft = () => {
@@ -35,7 +31,6 @@ export default function HomeScreen() {
 
   const handleSwipeRight = () => {
     setCurrentIndex(currentIndex + 1);
-    // In a real app, we would save this match
   };
 
   const resetCards = () => {
@@ -69,23 +64,22 @@ export default function HomeScreen() {
         {showEmptyState ? (
           <EmptyState onReset={resetCards} />
         ) : (
-          <>
-            {users
-              .slice(currentIndex, currentIndex + 2)
-              .reverse()
-              .map((user, index) => {
-                const isFirst = index === 0;
-                return (
-                  <CandidateCard
-                    key={user.id}
-                    user={user}
-                    onSwipeLeft={handleSwipeLeft}
-                    onSwipeRight={handleSwipeRight}
-                    isFirst={isFirst}
-                  />
-                );
-              })}
-          </>
+          users
+            .slice(currentIndex, currentIndex + 2)
+            .map((user, index) => {
+              const isFirst = index === 0;
+              const zIndex = 2 - index;
+              return (
+                <CandidateCard
+                  key={user.id}
+                  user={user}
+                  onSwipeLeft={handleSwipeLeft}
+                  onSwipeRight={handleSwipeRight}
+                  isFirst={isFirst}
+                  zIndex={zIndex}
+                />
+              );
+            })
         )}
       </View>
     </SafeAreaView>

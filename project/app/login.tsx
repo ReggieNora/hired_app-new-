@@ -10,13 +10,19 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_600SemiBold,
+  Inter_700Bold,
+} from '@expo-google-fonts/inter';
 import Colors from '../constants/Colors';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 export default function LoginScreen() {
+  const { type } = useLocalSearchParams<{ type: 'seeker' | 'employer' }>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -58,7 +64,7 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <StatusBar style="dark" />
-      <Animated.View 
+      <Animated.View
         style={styles.content}
         entering={FadeIn.duration(800)}
         exiting={FadeOut.duration(300)}
@@ -69,12 +75,16 @@ export default function LoginScreen() {
             style={styles.logo}
           />
           <Text style={styles.title}>Hired</Text>
-          <Text style={styles.subtitle}>Find your perfect candidate</Text>
+          <Text style={styles.subtitle}>
+            {type === 'seeker'
+              ? 'Find your next opportunity'
+              : 'Find your perfect candidate'}
+          </Text>
         </View>
 
         <View style={styles.formContainer}>
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
-          
+
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
             <TextInput
@@ -155,6 +165,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Regular',
     fontSize: 16,
     color: Colors.gray[600],
+    textAlign: 'center',
   },
   formContainer: {
     width: '100%',
